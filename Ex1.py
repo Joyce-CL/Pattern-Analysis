@@ -21,6 +21,7 @@ ax2.plot(x, g_gaussian, color='r')
 # show
 plt.show()
 
+
 # 2D Case
 def Gaussian_Distribution(mean, cov, sample):
     # get distribution data of 2D Gaussian
@@ -42,25 +43,27 @@ d = np.dstack([X, Y])
 # compute joint Gaussian in 2D
 Z = Gaussian.pdf(d).reshape(sample, sample)
 
-# draw
+
+# draw the ground truth
 fig2 = plt.figure(figsize=(20, 20))
 ax3 = Axes3D(fig2)
 ax3.plot_surface(X, Y, Z, cmap='Reds_r')
 
+
+# draw the experiment
 fig3 = plt.figure(figsize=(20, 20))
 ax4 = fig3.gca(projection='3d')
-
 hist, xedges, yedges = np.histogram2d(data.T[:, 0], data.T[:, 1], bins=30, range=[[-6, 6], [-3, 3]])
 
+# xpos, ypos, zpos: x,y,z coordinates of each bar
+# dx, dy, dz: Width, Depth, Height of each bar
 xpos, ypos = np.meshgrid(xedges[:-1], yedges[:-1])
 xpos = xpos.flatten('F')
 ypos = ypos.flatten('F')
 zpos = np.zeros_like(xpos)
-
 dx = 0.5 * np.ones_like(zpos)
 dy = dx.copy()
 dz = hist.flatten()
 
 ax4.bar3d(xpos, ypos, zpos, dx, dy, dz, color='b', zsort='average')
-
 plt.show()
