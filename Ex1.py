@@ -20,3 +20,47 @@ ax2 = fig1.add_subplot(122)
 ax2.plot(x, g_gaussian, color='r')
 # show
 plt.show()
+
+# 2D Case
+def Gaussian_Distribution(mean, cov, sample):
+    # get distribution data of 2D Gaussian
+    data = np.random.multivariate_normal(mean, cov, sample).T
+    # get PDF of 2D Gaussian
+    Gaussian = multivariate_normal(mean=mean, cov=cov)
+    return data, Gaussian
+
+
+mean = [0.5, -0.2]
+cov = [[2.0, 0.3], [0.3, 0.5]]
+sample = 1000
+bins = 30
+data, Gaussian = Gaussian_Distribution(mean, cov, sample)
+# set 2D space
+X, Y = np.meshgrid(np.linspace(-6, 6, sample), np.linspace(-6, 6, sample))
+# get 2D data
+d = np.dstack([X, Y])
+# compute joint Gaussian in 2D
+Z = Gaussian.pdf(d).reshape(sample, sample)
+
+# draw
+fig2 = plt.figure(figsize=(20, 20))
+ax3 = Axes3D(fig2)
+ax3.plot_surface(X, Y, Z, cmap='Reds_r')
+
+fig3 = plt.figure(figsize=(20, 20))
+ax4 = fig3.gca(projection='3d')
+
+hist, xedges, yedges = np.histogram2d(data.T[:, 0], data.T[:, 1], bins=30, range=[[-6, 6], [-3, 3]])
+
+xpos, ypos = np.meshgrid(xedges[:-1], yedges[:-1])
+xpos = xpos.flatten('F')
+ypos = ypos.flatten('F')
+zpos = np.zeros_like(xpos)
+
+dx = 0.5 * np.ones_like(zpos)
+dy = dx.copy()
+dz = hist.flatten()
+
+ax4.bar3d(xpos, ypos, zpos, dx, dy, dz, color='b', zsort='average')
+
+plt.show()
