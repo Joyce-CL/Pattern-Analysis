@@ -18,7 +18,7 @@ g_gaussian = 1/(sigma * np.sqrt(2 * np.pi)) * np.exp(-(e_gaussian - mu)**2 / (2 
 # the ground truth
 ax2 = fig1.add_subplot(122)
 ax2.plot(e_gaussian, g_gaussian, color='r')
-# show result
+# show the result
 plt.show()
 
 
